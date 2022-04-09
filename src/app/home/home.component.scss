@@ -1,0 +1,25 @@
+@import '../shared/scss/variables.scss';
+
+$header-spacing: 4px;
+
+:host {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 350px;
+    border: solid 1px $accent-color;
+    border-radius: 4px;
+    .header {
+        background-color: $accent-color;
+        padding: 4px;
+        font-size: 2em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: calc(100% - #{$header-spacing * 2});
+    }
+    form {
+        padding: 20px 10px;
+    }
+}

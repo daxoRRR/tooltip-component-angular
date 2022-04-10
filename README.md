@@ -12,7 +12,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - &#9744; Adapt tooltip size based on space available
 - &#9744; Animate tooltip with fade
 - &#9744; Tooltip content can be HTML
-- &#9744; If the placement doesn't have enough space available, try with another placement
+- &#9745; If the placement doesn't have enough space available, try with another placement
 - &#9744; Attach to body to prevent display issues (Element with max-width and overflow hidden (modal))
 
 ## Development server

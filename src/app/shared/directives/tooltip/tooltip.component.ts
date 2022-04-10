@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { AfterContentInit, ChangeDetectorRef, Component, ElementRef, HostListener, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, Input } from '@angular/core';
 import { placementTooltip, positionTooltip } from '../../models/tooltip/tooltip.model';
 
 @Component({
@@ -21,7 +21,7 @@ import { placementTooltip, positionTooltip } from '../../models/tooltip/tooltip.
   templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.scss']
 })
-export class TooltipComponent implements AfterContentInit {
+export class TooltipComponent {
 
   // Is the parent HTMLElement
   @Input() hostElement!: HTMLElement;
@@ -32,25 +32,24 @@ export class TooltipComponent implements AfterContentInit {
   // Get the position and set Right by default
   @Input() placement: keyof typeof placementTooltip = placementTooltip.left;
 
-  // Set default positionTooltip
-  public positionTooltip: positionTooltip = {top: 0, left: 0};
-  private initialTooltipSize: {height: number, width: number} | null = null;
-
-  constructor(private elementRef: ElementRef, private ref: ChangeDetectorRef) { }
-
-
-  ngAfterContentInit(): void {
+  @Input() show = () => {
     if (!this.hostElement) {
       throw new Error('hostElement should be defined');
     }
     if (!this.tooltipText) {
       // Display the text in the parent HTMLElement if no text given
       this.tooltipText = this.hostElement.innerText;
-      // Need to detectChanges to set the text and to have the offsetWidth/offsetHeight updated
-      this.ref.detectChanges();
     }
+    // Need to detectChanges to set the text and to have the offsetWidth/offsetHeight updated
+    this.ref.detectChanges();
     this.setPositionTooltip();
-  }
+  };
+
+  // Set default positionTooltip
+  public positionTooltip: positionTooltip = {top: 0, left: 0};
+  private initialTooltipSize: {height: number, width: number} | null = null;
+
+  constructor(private elementRef: ElementRef, private ref: ChangeDetectorRef) { }
 
   /**
    * Display tooltip on top, right, bottom, left

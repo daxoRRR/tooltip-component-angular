@@ -1,8 +1,23 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { AfterContentInit, ChangeDetectorRef, Component, ElementRef, HostListener, Input } from '@angular/core';
 import { placementTooltip, positionTooltip } from '../../models/tooltip/tooltip.model';
 
 @Component({
   selector: 'app-tooltip',
+  host: {
+    '[@fadeInOut]': 'true',
+  },
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate(450, style({ opacity: 1}))
+      ]),
+      transition(':leave', [
+        animate(300, style({ opacity: 0 }))
+      ])
+    ])
+  ],
   templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.scss']
 })
@@ -127,3 +142,4 @@ export class TooltipComponent implements AfterContentInit {
     return window.innerHeight > positionFromParent.top + positionFromParent.height;
   }
 }
+

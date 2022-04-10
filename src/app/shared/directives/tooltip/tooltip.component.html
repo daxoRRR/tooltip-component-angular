@@ -1,3 +1,9 @@
-<span class="tooltip" [ngStyle]="{'top': positionTooltip.top + 'px', 'left': positionTooltip.left + 'px'}">
+<span
+  class="tooltip"
+  [ngStyle]="{
+    'top': positionTooltip.top + 'px',
+    'left': positionTooltip.left + 'px',
+    'width': positionTooltip.width ? positionTooltip.width + 'px' : ''
+  }">
   {{ tooltipText }}
 </span>

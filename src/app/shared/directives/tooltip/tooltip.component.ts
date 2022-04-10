@@ -30,7 +30,7 @@ export class TooltipComponent implements AfterContentInit {
   @Input() tooltipText?: string;
 
   // Get the position and set Right by default
-  @Input() placement: placementTooltip = placementTooltip.left;
+  @Input() placement: keyof typeof placementTooltip = placementTooltip.left;
 
   // Set default positionTooltip
   public positionTooltip: positionTooltip = {top: 0, left: 0};

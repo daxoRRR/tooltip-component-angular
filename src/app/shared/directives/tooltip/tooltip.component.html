@@ -4,6 +4,7 @@
     'top': positionTooltip.top + 'px',
     'left': positionTooltip.left + 'px',
     'width': positionTooltip.width ? positionTooltip.width + 'px' : ''
-  }">
-  {{ tooltipText }}
+  }"
+  [innerHtml]="tooltipText"
+  role="tooltip">
 </span>

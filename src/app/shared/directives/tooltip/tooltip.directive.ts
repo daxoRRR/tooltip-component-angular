@@ -1,12 +1,14 @@
 import { ComponentFactoryResolver, ComponentRef, Directive, HostListener, Input, ViewContainerRef } from '@angular/core';
+import { placementTooltip } from '../../models/tooltip/tooltip.model';
 import { TooltipComponent } from './tooltip.component';
 
 @Directive({
   selector: '[appTooltip]'
 })
 export class TooltipDirective {
-  @Input("appTooltip") tooltipText!: string;
+  @Input("appTooltip") tooltipText: string = '';
   @Input() tooltipDisable = false;
+  @Input() tooltipPlacement?: keyof typeof placementTooltip;
 
   private tooltipComponent!: ComponentRef<TooltipComponent>;
   private displayEvent: string | null = null;
@@ -27,6 +29,9 @@ export class TooltipDirective {
       this.tooltipComponent.instance.hostElement = this.viewContainerRef.element.nativeElement;
       if (this.tooltipText) {
         this.tooltipComponent.instance.tooltipText = this.tooltipText;
+      }
+      if (this.tooltipPlacement) {
+        this.tooltipComponent.instance.placement = this.tooltipPlacement;
       }
     }
   }

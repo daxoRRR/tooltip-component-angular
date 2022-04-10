@@ -9,7 +9,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - &#9745; Not display tooltip if parameter to display is falsy
 - &#9745; Display tooltip on focus
 - &#9745; Set max width on tooltip
-- &#9744; Adapt tooltip size based on space available
+- &#9745; Adapt tooltip size based on space available
 - &#9745; Animate tooltip with fade
 - &#9745; Tooltip content can be HTML
 - &#9745; If the placement doesn't have enough space available, try with another placement

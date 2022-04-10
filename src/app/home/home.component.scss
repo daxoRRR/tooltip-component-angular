@@ -18,6 +18,8 @@ $header-spacing: 4px;
         text-overflow: ellipsis;
         white-space: nowrap;
         width: calc(100% - #{$header-spacing * 2});
+        position: relative;
+        box-sizing: content-box;
     }
     form {
         padding: 20px 10px;

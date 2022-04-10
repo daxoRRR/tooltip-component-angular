@@ -1,8 +1,9 @@
 @import '../../scss/variables.scss';
 
-:host {
+.tooltip {
     position: absolute;
     background-color: $grey-color;
+    padding: 4px;
     color: $text;
     z-index: 1000;
 }

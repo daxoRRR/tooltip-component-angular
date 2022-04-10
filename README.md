@@ -2,6 +2,19 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.0.
 
+## TODO
+
+- &#9745; Display tooltip on hover
+- &#9745; Set position based on placement parameter
+- &#9745; Not display tooltip if parameter to display is falsy
+- &#9744; Display tooltip on focus
+- &#9744; Set max width on tooltip
+- &#9744; Adapt tooltip size based on space available
+- &#9744; Animate tooltip with fade
+- &#9744; Tooltip content can be HTML
+- &#9744; If the placement doesn't have enough space available, try with another placement
+- &#9744; Attach to body to prevent display issues (Element with max-width and overflow hidden (modal))
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.

@@ -33,7 +33,6 @@ export class TooltipDirective {
       if (this.tooltipPlacement) {
         this.tooltipComponent.instance.placement = this.tooltipPlacement;
       }
-      this.tooltipComponent.instance.show();
     }
   }
 

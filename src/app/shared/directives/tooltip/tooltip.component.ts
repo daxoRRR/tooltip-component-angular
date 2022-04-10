@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { ChangeDetectorRef, Component, ElementRef, HostListener, Input } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, Input } from '@angular/core';
 import { placementTooltip, positionTooltip } from '../../models/tooltip/tooltip.model';
 
 @Component({
@@ -21,7 +21,7 @@ import { placementTooltip, positionTooltip } from '../../models/tooltip/tooltip.
   templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.scss']
 })
-export class TooltipComponent {
+export class TooltipComponent implements AfterContentInit {
 
   // Is the parent HTMLElement
   @Input() hostElement!: HTMLElement;
@@ -30,9 +30,14 @@ export class TooltipComponent {
   @Input() tooltipText?: string;
 
   // Get the position and set Right by default
-  @Input() placement: keyof typeof placementTooltip = placementTooltip.left;
+  @Input() placement: keyof typeof placementTooltip = placementTooltip.right;
 
-  @Input() show = () => {
+  // Set default positionTooltip
+  public positionTooltip: positionTooltip = {top: 0, left: 0};
+  private initialTooltipSize: {height: number, width: number} | null = null;
+
+  constructor(private elementRef: ElementRef, private ref: ChangeDetectorRef) { }
+  ngAfterContentInit(): void {
     if (!this.hostElement) {
       throw new Error('hostElement should be defined');
     }
@@ -43,13 +48,7 @@ export class TooltipComponent {
     // Need to detectChanges to set the text and to have the offsetWidth/offsetHeight updated
     this.ref.detectChanges();
     this.setPositionTooltip();
-  };
-
-  // Set default positionTooltip
-  public positionTooltip: positionTooltip = {top: 0, left: 0};
-  private initialTooltipSize: {height: number, width: number} | null = null;
-
-  constructor(private elementRef: ElementRef, private ref: ChangeDetectorRef) { }
+  }
 
   /**
    * Display tooltip on top, right, bottom, left
@@ -64,44 +63,52 @@ export class TooltipComponent {
     switch(this.placement) {
       case placementTooltip.left:
         if (this.canDisplayTooltipOnLeft(positionFromParent) || initialPlacement === placementTooltip.left) {
-          this.positionTooltip = {
+          tooltipElement = this.elementRef.nativeElement.children[0];
+          this.positionTooltip = { ...this.positionTooltip,
             top: positionFromParent.top + (this.hostElement.offsetHeight / 2 - tooltipElement.offsetHeight / 2),
             left: positionFromParent.left - tooltipElement.offsetWidth
           }
         } else {
+          this.positionTooltip = {...this.positionTooltip, width: undefined, height: undefined}
           this.placement = placementTooltip.top;
           this.setPositionTooltip(initialPlacement || placementTooltip.left);
         }
         break;
       case placementTooltip.top:
         if (this.canDisplayTooltipOnTop(positionFromParent) || initialPlacement === placementTooltip.top) {
-          this.positionTooltip = {
+          tooltipElement = this.elementRef.nativeElement.children[0];
+          this.positionTooltip = { ...this.positionTooltip,
             top: positionFromParent.top - tooltipElement.offsetHeight,
             left: positionFromParent.left + (this.hostElement.offsetWidth / 2 - tooltipElement.offsetWidth / 2)
           }
         } else {
+          this.positionTooltip = {...this.positionTooltip, width: undefined, height: undefined}
           this.placement = placementTooltip.right;
           this.setPositionTooltip(initialPlacement || placementTooltip.top);
         }
         break;
       case placementTooltip.right:
         if (this.canDisplayTooltipOnRight(positionFromParent) || initialPlacement === placementTooltip.right) {
-          this.positionTooltip = {
+          tooltipElement = this.elementRef.nativeElement.children[0];
+          this.positionTooltip = { ...this.positionTooltip,
             top: positionFromParent.top + (this.hostElement.offsetHeight / 2 - tooltipElement.offsetHeight / 2),
             left: positionFromParent.right
           }
         } else {
+          this.positionTooltip = {...this.positionTooltip, width: undefined, height: undefined}
           this.placement = placementTooltip.bottom;
           this.setPositionTooltip(initialPlacement || placementTooltip.right);
         }
         break;
       case placementTooltip.bottom:
         if (this.canDisplayTooltipOnBottom(positionFromParent) || initialPlacement === placementTooltip.bottom) {
-          this.positionTooltip = {
+          tooltipElement = this.elementRef.nativeElement.children[0];
+          this.positionTooltip = { ...this.positionTooltip,
             top: positionFromParent.top + positionFromParent.height,
             left: positionFromParent.left + (this.hostElement.offsetWidth / 2 - tooltipElement.offsetWidth / 2)
           }
         } else {
+          this.positionTooltip = {...this.positionTooltip, width: undefined, height: undefined}
           this.placement = placementTooltip.left;
           this.setPositionTooltip(initialPlacement || placementTooltip.bottom);
         }
@@ -126,19 +133,49 @@ export class TooltipComponent {
   }
 
   private canDisplayTooltipOnLeft(positionFromParent: DOMRect): boolean {
-    return positionFromParent.left > this.initialTooltipSize!.width;
+    if (positionFromParent.left > this.initialTooltipSize!.width) {
+      return true;
+    } else if (this.initialTooltipSize && positionFromParent.left - 10 > 60) {
+      this.positionTooltip.width = positionFromParent.left - 10;
+      this.ref.detectChanges();
+      return true;
+    } else {
+      return false;
+    }
   }
 
   private canDisplayTooltipOnTop(positionFromParent: DOMRect): boolean {
-    return positionFromParent.top > this.initialTooltipSize!.height;
+    if (positionFromParent.top > this.initialTooltipSize!.height) {
+      return true;
+    } else if (this.initialTooltipSize && positionFromParent.top - 10 > 60) {
+      this.positionTooltip.height = positionFromParent.top - 10;
+      this.ref.detectChanges();
+      return true;
+    } else {
+      return false;
+    }
   }
 
   private canDisplayTooltipOnRight(positionFromParent: DOMRect): boolean {
-    return window.innerWidth > positionFromParent.right + this.initialTooltipSize!.width;
+    if(window.innerWidth > positionFromParent.right + this.initialTooltipSize!.width) {
+      return true;
+    } else if (this.initialTooltipSize && window.innerWidth - positionFromParent.right - 10 > 60) {
+      this.positionTooltip.width = window.innerWidth - positionFromParent.right - 10;
+      this.ref.detectChanges();
+      return true;
+    } else {
+      return false;
+    }
   }
 
   private canDisplayTooltipOnBottom(positionFromParent: DOMRect): boolean {
-    return window.innerHeight > positionFromParent.top + this.initialTooltipSize!.height + positionFromParent.height;
+    if (window.innerHeight > positionFromParent.top + this.initialTooltipSize!.height + positionFromParent.height) {
+      return true;
+    } else if (this.initialTooltipSize && window.innerHeight - this.initialTooltipSize.height - positionFromParent.height - 10 > 60) {
+      this.positionTooltip.height = window.innerHeight - this.initialTooltipSize.height - positionFromParent.height - 10
+      return true;
+    } else {
+      return false;
+    }
   }
 }
-

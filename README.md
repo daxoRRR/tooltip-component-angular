@@ -7,7 +7,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - &#9745; Display tooltip on hover
 - &#9745; Set position based on placement parameter
 - &#9745; Not display tooltip if parameter to display is falsy
-- &#9744; Display tooltip on focus
+- &#9745; Display tooltip on focus
 - &#9744; Set max width on tooltip
 - &#9744; Adapt tooltip size based on space available
 - &#9744; Animate tooltip with fade

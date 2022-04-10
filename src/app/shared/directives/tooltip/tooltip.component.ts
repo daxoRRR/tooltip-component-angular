@@ -64,7 +64,7 @@ export class TooltipComponent {
     switch(this.placement) {
       case placementTooltip.left:
         if (this.canDisplayTooltipOnLeft(positionFromParent) || initialPlacement === placementTooltip.left) {
-          this.positionTooltip = {...this.positionTooltip,
+          this.positionTooltip = {
             top: positionFromParent.top + (this.hostElement.offsetHeight / 2 - tooltipElement.offsetHeight / 2),
             left: positionFromParent.left - tooltipElement.offsetWidth
           }
@@ -75,7 +75,7 @@ export class TooltipComponent {
         break;
       case placementTooltip.top:
         if (this.canDisplayTooltipOnTop(positionFromParent) || initialPlacement === placementTooltip.top) {
-          this.positionTooltip = { ...this.positionTooltip,
+          this.positionTooltip = {
             top: positionFromParent.top - tooltipElement.offsetHeight,
             left: positionFromParent.left + (this.hostElement.offsetWidth / 2 - tooltipElement.offsetWidth / 2)
           }
@@ -86,7 +86,7 @@ export class TooltipComponent {
         break;
       case placementTooltip.right:
         if (this.canDisplayTooltipOnRight(positionFromParent) || initialPlacement === placementTooltip.right) {
-          this.positionTooltip = {...this.positionTooltip,
+          this.positionTooltip = {
             top: positionFromParent.top + (this.hostElement.offsetHeight / 2 - tooltipElement.offsetHeight / 2),
             left: positionFromParent.right
           }
@@ -138,7 +138,7 @@ export class TooltipComponent {
   }
 
   private canDisplayTooltipOnBottom(positionFromParent: DOMRect): boolean {
-    return window.innerHeight > positionFromParent.top + positionFromParent.height;
+    return window.innerHeight > positionFromParent.top + this.initialTooltipSize!.height + positionFromParent.height;
   }
 }
 
